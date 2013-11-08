@@ -63,7 +63,7 @@ NSDictionary *GetAudioDevices()
                                    kAudioDevicePropertyDeviceUID,
                                    &sz,&s
                                    );
-            NSLog(@"DeviceUID: [%@]",s);
+            // NSLog(@"DeviceUID: [%@]",s);
             // [s release];
             NSString *deviceUID = s;
             
@@ -72,11 +72,11 @@ NSDictionary *GetAudioDevices()
                                    kAudioObjectPropertyName,
                                    &sz,&s
                                    );
-            NSLog(@"    Name: [%@]",s);
+            // NSLog(@"    Name: [%@]",s);
             // [s release];
             NSString *deviceName = s;
             
-            NSLog(@"    OutputChannels: %d",outputChannelCount);
+            // NSLog(@"    OutputChannels: %d",outputChannelCount);
             [result setObject:deviceUID
                        forKey:deviceName];
         }
@@ -102,7 +102,7 @@ NSDictionary *GetAudioDevices()
     }
     tempFileURL = [cacheDir URLByAppendingPathComponent:fileName];
     [tempFileURL retain];
-    NSLog(@"Speak the following text: %@",textToSpeak);
+    // NSLog(@"Speak the following text: %@",textToSpeak);
     [synthesizer startSpeakingString:textToSpeak toURL:tempFileURL];
 }
 
