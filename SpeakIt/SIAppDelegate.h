@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SIAppDelegate : NSObject <NSApplicationDelegate, NSSpeechSynthesizerDelegate>
+@interface SIAppDelegate : NSObject <NSApplicationDelegate, NSSpeechSynthesizerDelegate, NSSoundDelegate>
 {
     IBOutlet NSTextField   *text;
     IBOutlet NSButton      *speak;

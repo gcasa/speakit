@@ -109,7 +109,7 @@ NSDictionary *GetAudioDevices()
 - (IBAction)output:(id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[voice titleOfSelectedItem] forKey:@"Output"];
+    [defaults setObject:[output titleOfSelectedItem] forKey:@"Output"];
     [defaults synchronize];
 }
 
@@ -142,17 +142,33 @@ NSDictionary *GetAudioDevices()
     {
         NSSound *sound = [[NSSound alloc] initWithContentsOfFile:[tempFileURL path] byReference:NO];
         [sound setVolume:[currentVolume floatValue]];
+        [sound setDelegate:self];
         [sound play];
-        [tempFileURL release];
-        [text setStringValue:@""];
     }
+    
+    NSSound *sound = [[NSSound alloc] initWithContentsOfFile:[tempFileURL path] byReference:NO];
+    [sound setVolume:[currentVolume floatValue]];
+    NSString *deviceUID = [devicesDictionary objectForKey:[output titleOfSelectedItem]];
+    [sound setPlaybackDeviceIdentifier:deviceUID];
+    [sound setDelegate:self];
+    [sound play];
 }
 
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender willSpeakWord:(NSRange)characterRange ofString:(NSString *)string
 {
     
 }
-                          
+
+- (void)sound:(NSSound *)sound didFinishPlaying:(BOOL)aBool
+{
+    if(aBool == YES)
+    {
+        [sound release];
+        // [tempFileURL release];
+        [text setStringValue:@""];
+    }
+}
+    
 // App Delegate methods...
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -271,7 +287,7 @@ NSDictionary *GetAudioDevices()
             
             NSMutableDictionary *dict = [NSMutableDictionary dictionary];
             [dict setValue:failureDescription forKey:NSLocalizedDescriptionKey];
-            error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:101 userInfo:dict];
+            error = [NSError errorWithDomain:@"SpeakIt" code:101 userInfo:dict];
             
             [[NSApplication sharedApplication] presentError:error];
             return nil;
