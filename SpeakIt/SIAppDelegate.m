@@ -6,7 +6,83 @@
 //  Copyright (c) 2013 Gregory Casamento. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
+#import <CoreAudio/CoreAudio.h>
+
 #import "SIAppDelegate.h"
+#import "SIDeviceDescriptor.h"
+#import "NSString+SHA1.h"
+
+NSDictionary *GetAudioDevices()
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:10];
+    UInt32 sz;
+    AudioHardwareGetPropertyInfo(kAudioHardwarePropertyDevices,&sz,NULL);
+    AudioDeviceID *audioDevices=(AudioDeviceID *)malloc(sz);
+    AudioHardwareGetProperty(kAudioHardwarePropertyDevices,&sz,audioDevices);
+    UInt32 deviceCount = (sz / sizeof(AudioDeviceID));
+    
+    UInt32 i;
+    for(i=0;i<deviceCount;++i)
+    {
+        NSString *s;
+        
+        // get buffer list
+        UInt32 outputChannelCount=0;
+        {
+            AudioDeviceGetPropertyInfo(
+                                       audioDevices[i],0,false,
+                                       kAudioDevicePropertyStreamConfiguration,
+                                       &sz,NULL
+                                       );
+            AudioBufferList *bufferList=(AudioBufferList *)malloc(sz);
+            AudioDeviceGetProperty(
+                                   audioDevices[i],0,false,
+                                   kAudioDevicePropertyStreamConfiguration,
+                                   &sz,&bufferList
+                                   );
+            
+            UInt32 j;
+            for(j=0;j<bufferList->mNumberBuffers;++j)
+                outputChannelCount += bufferList->mBuffers[j].mNumberChannels;
+            
+            // free(bufferList);
+        }
+        
+        // skip devices without any output channels
+        if(outputChannelCount==0)
+            continue;
+        
+        // output some device info
+        {
+            SIDeviceDescriptor *descriptor = [[SIDeviceDescriptor alloc] init];
+            sz=sizeof(CFStringRef);
+            
+            AudioDeviceGetProperty(
+                                   audioDevices[i],0,false,
+                                   kAudioDevicePropertyDeviceUID,
+                                   &sz,&s
+                                   );
+            NSLog(@"DeviceUID: [%@]",s);
+            // [s release];
+            NSString *deviceUID = s;
+            
+            AudioDeviceGetProperty(
+                                   audioDevices[i],0,false,
+                                   kAudioObjectPropertyName,
+                                   &sz,&s
+                                   );
+            NSLog(@"    Name: [%@]",s);
+            // [s release];
+            NSString *deviceName = s;
+            
+            NSLog(@"    OutputChannels: %d",outputChannelCount);
+            [result setObject:deviceUID
+                       forKey:deviceName];
+        }
+    }
+    return result;
+}
 
 @implementation SIAppDelegate
 
@@ -14,12 +90,129 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+// Controller methods...
+- (IBAction)speak:(id)sender
 {
-    // Insert code here to initialize your application
+    NSString *textToSpeak = [text stringValue];
+    NSString *fileName = [textToSpeak stringByHashingStringWithSHA1];
+    NSURL *cacheDir = [[self applicationFilesDirectory] URLByAppendingPathComponent:@"Cache"];
+    if([[NSFileManager defaultManager] fileExistsAtPath:[cacheDir path]] == NO)
+    {
+        [[NSFileManager defaultManager] createDirectoryAtURL:cacheDir withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    tempFileURL = [cacheDir URLByAppendingPathComponent:fileName];
+    [tempFileURL retain];
+    NSLog(@"Speak the following text: %@",textToSpeak);
+    [synthesizer startSpeakingString:textToSpeak toURL:tempFileURL];
 }
 
-// Returns the directory the application uses to store the Core Data store file. This code uses a directory named "com.openlogiccorp.SpeakIt" in the user's Application Support directory.
+- (IBAction)output:(id)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[voice titleOfSelectedItem] forKey:@"Output"];
+    [defaults synchronize];
+}
+
+- (IBAction)voice:(id)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[voice titleOfSelectedItem] forKey:@"Voice"];
+    [defaults synchronize];
+}
+
+- (IBAction)monitor:(id)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:([monitor state] == NSOnState) forKey:@"MonitorOutput"];
+    [defaults synchronize];
+}
+
+- (IBAction)volume:(id)sender
+{
+    currentVolume = [sender stringValue];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:currentVolume forKey:@"CurrentVolume"];
+    [defaults synchronize];
+}
+
+// Speech Synthesis Delegate methods...
+- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender didFinishSpeaking:(BOOL)finishedSpeaking
+{
+    if([monitor state] == NSOnState)
+    {
+        NSSound *sound = [[NSSound alloc] initWithContentsOfFile:[tempFileURL path] byReference:NO];
+        [sound setVolume:[currentVolume floatValue]];
+        [sound play];
+        [tempFileURL release];
+        [text setStringValue:@""];
+    }
+}
+
+- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender willSpeakWord:(NSRange)characterRange ofString:(NSString *)string
+{
+    
+}
+                          
+// App Delegate methods...
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    synthesizer = [[NSSpeechSynthesizer alloc] init];
+    
+    [synthesizer setDelegate:self];
+    
+    // Get audio output
+    devicesDictionary = GetAudioDevices();
+    [devicesDictionary retain];
+    NSArray *keys = [[devicesDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    [output removeAllItems];
+    for(NSString *k in keys)
+    {
+        [output addItemWithTitle:k];
+    }
+    
+    // Get all voices
+    voicesDictionary = [[NSMutableDictionary alloc] initWithCapacity:10];
+    reverseVoicesDict = [[NSMutableDictionary alloc] initWithCapacity:10];
+    NSArray *voices = [NSSpeechSynthesizer availableVoices];
+    for(NSString *v in voices)
+    {
+        NSDictionary *voiceAttrs = [NSSpeechSynthesizer attributesForVoice:v];
+        NSString *name = [voiceAttrs objectForKey:NSVoiceName];
+        [voicesDictionary setObject:v forKey:name];
+        [reverseVoicesDict setObject:name forKey:v];
+        [voice addItemWithTitle:name];
+    }
+
+    // Select current voice..
+    NSString *defaultVoiceKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"Voice"];
+    if(defaultVoiceKey == nil)
+    {
+        defaultVoiceKey = [NSSpeechSynthesizer defaultVoice];
+    }
+    NSString *defaultVoice = [reverseVoicesDict objectForKey:defaultVoiceKey];
+    [voice selectItemWithTitle:defaultVoice];
+    
+    // Select current output..
+    NSString *defaultOutputKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"Output"];
+    if(defaultOutputKey != nil)
+    {
+        [output selectItemWithTitle:defaultOutputKey];
+    }
+    
+    // Set current volume..
+    currentVolume = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentVolume"];
+    if(currentVolume == nil)
+    {
+        currentVolume = @"1.0";
+    }
+    [volume setFloatValue:[currentVolume floatValue]];
+}
+
+//
+// Returns the directory the application uses to store the Core Data store file.
+// This code uses a directory named "com.openlogiccorp.SpeakIt" in the user's
+// Application Support directory.
+//
 - (NSURL *)applicationFilesDirectory
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -39,7 +232,11 @@
     return _managedObjectModel;
 }
 
-// Returns the persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.)
+//
+// Returns the persistent store coordinator for the application. This implementation creates
+// and return a coordinator, having added the store for the application to it. (The
+// directory for the store is created, if necessary.)
+//
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (_persistentStoreCoordinator) {
@@ -92,7 +289,10 @@
     return _persistentStoreCoordinator;
 }
 
-// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) 
+//
+// Returns the managed object context for the application (which is already
+// bound to the persistent store coordinator for the application.)
+//
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (_managedObjectContext) {
@@ -114,13 +314,20 @@
     return _managedObjectContext;
 }
 
-// Returns the NSUndoManager for the application. In this case, the manager returned is that of the managed object context for the application.
+//
+// Returns the NSUndoManager for the application. In this case, the manager
+// returned is that of the managed object context for the application.
+//
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
 {
     return [[self managedObjectContext] undoManager];
 }
 
-// Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
+//
+// Performs the save action for the application, which is to send the
+// save: message to the application's managed object context. Any
+// encountered errors are presented to the user.
+//
 - (IBAction)saveAction:(id)sender
 {
     NSError *error = nil;

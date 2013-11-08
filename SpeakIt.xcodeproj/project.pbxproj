@@ -19,6 +19,15 @@
 		1477E133182BE6BB00B0A1D0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1477E10F182BE6BA00B0A1D0 /* Cocoa.framework */; };
 		1477E13B182BE6BB00B0A1D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1477E139182BE6BB00B0A1D0 /* InfoPlist.strings */; };
 		1477E13D182BE6BB00B0A1D0 /* SpeakItTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1477E13C182BE6BB00B0A1D0 /* SpeakItTests.m */; };
+		1477E14C182BED4100B0A1D0 /* SpeakIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1477E14B182BED4100B0A1D0 /* SpeakIt.icns */; };
+		14CFF862182D3E4200740C29 /* NSString+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CFF861182D3E4200740C29 /* NSString+SHA1.m */; };
+		14CFF865182D427500740C29 /* NSMutableData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CFF864182D427500740C29 /* NSMutableData+AES.m */; };
+		14CFF868182D42C500740C29 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CFF867182D42C500740C29 /* NSDataAdditions.m */; };
+		14FA8820182C7F97006A018B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14FA881C182C7F97006A018B /* AudioToolbox.framework */; };
+		14FA8821182C7F97006A018B /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14FA881D182C7F97006A018B /* AudioUnit.framework */; };
+		14FA8822182C7F97006A018B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14FA881E182C7F97006A018B /* CoreAudio.framework */; };
+		14FA8823182C7F97006A018B /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14FA881F182C7F97006A018B /* CoreAudioKit.framework */; };
+		14FA8826182C8181006A018B /* SIDeviceDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA8825182C8181006A018B /* SIDeviceDescriptor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +61,20 @@
 		1477E138182BE6BB00B0A1D0 /* SpeakItTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpeakItTests-Info.plist"; sourceTree = "<group>"; };
 		1477E13A182BE6BB00B0A1D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1477E13C182BE6BB00B0A1D0 /* SpeakItTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeakItTests.m; sourceTree = "<group>"; };
+		1477E146182BE6E100B0A1D0 /* SpeakIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpeakIt.entitlements; sourceTree = "<group>"; };
+		1477E14B182BED4100B0A1D0 /* SpeakIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SpeakIt.icns; sourceTree = SOURCE_ROOT; };
+		14CFF860182D3E4200740C29 /* NSString+SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA1.h"; sourceTree = "<group>"; };
+		14CFF861182D3E4200740C29 /* NSString+SHA1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHA1.m"; sourceTree = "<group>"; };
+		14CFF863182D427500740C29 /* NSMutableData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+AES.h"; sourceTree = "<group>"; };
+		14CFF864182D427500740C29 /* NSMutableData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+AES.m"; sourceTree = "<group>"; };
+		14CFF866182D42C500740C29 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		14CFF867182D42C500740C29 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
+		14FA881C182C7F97006A018B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		14FA881D182C7F97006A018B /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		14FA881E182C7F97006A018B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		14FA881F182C7F97006A018B /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		14FA8824182C8181006A018B /* SIDeviceDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDeviceDescriptor.h; sourceTree = "<group>"; };
+		14FA8825182C8181006A018B /* SIDeviceDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIDeviceDescriptor.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +82,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14FA8820182C7F97006A018B /* AudioToolbox.framework in Frameworks */,
+				14FA8821182C7F97006A018B /* AudioUnit.framework in Frameworks */,
+				14FA8822182C7F97006A018B /* CoreAudio.framework in Frameworks */,
+				14FA8823182C7F97006A018B /* CoreAudioKit.framework in Frameworks */,
 				1477E110182BE6BA00B0A1D0 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +124,10 @@
 		1477E10E182BE6BA00B0A1D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14FA881C182C7F97006A018B /* AudioToolbox.framework */,
+				14FA881D182C7F97006A018B /* AudioUnit.framework */,
+				14FA881E182C7F97006A018B /* CoreAudio.framework */,
+				14FA881F182C7F97006A018B /* CoreAudioKit.framework */,
 				1477E10F182BE6BA00B0A1D0 /* Cocoa.framework */,
 				1477E131182BE6BA00B0A1D0 /* XCTest.framework */,
 				1477E111182BE6BA00B0A1D0 /* Other Frameworks */,
@@ -117,6 +148,15 @@
 		1477E115182BE6BA00B0A1D0 /* SpeakIt */ = {
 			isa = PBXGroup;
 			children = (
+				14CFF866182D42C500740C29 /* NSDataAdditions.h */,
+				14CFF867182D42C500740C29 /* NSDataAdditions.m */,
+				14CFF863182D427500740C29 /* NSMutableData+AES.h */,
+				14CFF864182D427500740C29 /* NSMutableData+AES.m */,
+				14CFF860182D3E4200740C29 /* NSString+SHA1.h */,
+				14CFF861182D3E4200740C29 /* NSString+SHA1.m */,
+				1477E146182BE6E100B0A1D0 /* SpeakIt.entitlements */,
+				14FA8824182C8181006A018B /* SIDeviceDescriptor.h */,
+				14FA8825182C8181006A018B /* SIDeviceDescriptor.m */,
 				1477E121182BE6BA00B0A1D0 /* SIAppDelegate.h */,
 				1477E122182BE6BA00B0A1D0 /* SIAppDelegate.m */,
 				1477E124182BE6BA00B0A1D0 /* MainMenu.xib */,
@@ -130,6 +170,7 @@
 		1477E116182BE6BA00B0A1D0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1477E14B182BED4100B0A1D0 /* SpeakIt.icns */,
 				1477E117182BE6BA00B0A1D0 /* SpeakIt-Info.plist */,
 				1477E118182BE6BA00B0A1D0 /* InfoPlist.strings */,
 				1477E11B182BE6BA00B0A1D0 /* main.m */,
@@ -205,6 +246,14 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Gregory Casamento";
 				TargetAttributes = {
+					1477E10B182BE6BA00B0A1D0 = {
+						DevelopmentTeam = 7PR8VYH29V;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					1477E12F182BE6BA00B0A1D0 = {
 						TestTargetID = 1477E10B182BE6BA00B0A1D0;
 					};
@@ -234,6 +283,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1477E14C182BED4100B0A1D0 /* SpeakIt.icns in Resources */,
 				1477E11A182BE6BA00B0A1D0 /* InfoPlist.strings in Resources */,
 				1477E12B182BE6BA00B0A1D0 /* Images.xcassets in Resources */,
 				1477E120182BE6BA00B0A1D0 /* Credits.rtf in Resources */,
@@ -257,7 +307,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1477E123182BE6BA00B0A1D0 /* SIAppDelegate.m in Sources */,
+				14CFF868182D42C500740C29 /* NSDataAdditions.m in Sources */,
+				14CFF865182D427500740C29 /* NSMutableData+AES.m in Sources */,
+				14CFF862182D3E4200740C29 /* NSString+SHA1.m in Sources */,
 				1477E11C182BE6BA00B0A1D0 /* main.m in Sources */,
+				14FA8826182C8181006A018B /* SIDeviceDescriptor.m in Sources */,
 				1477E129182BE6BA00B0A1D0 /* SpeakIt.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,7 +376,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -349,7 +403,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -359,7 +413,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -380,18 +434,20 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
 		1477E141182BE6BB00B0A1D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpeakIt/SpeakIt.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpeakIt/SpeakIt-Prefix.pch";
 				INFOPLIST_FILE = "SpeakIt/SpeakIt-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -400,11 +456,13 @@
 		1477E142182BE6BB00B0A1D0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpeakIt/SpeakIt.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpeakIt/SpeakIt-Prefix.pch";
 				INFOPLIST_FILE = "SpeakIt/SpeakIt-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -469,6 +527,7 @@
 				1477E142182BE6BB00B0A1D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1477E143182BE6BB00B0A1D0 /* Build configuration list for PBXNativeTarget "SpeakItTests" */ = {
 			isa = XCConfigurationList;
@@ -477,6 +536,7 @@
 				1477E145182BE6BB00B0A1D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
