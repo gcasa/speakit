@@ -116,8 +116,12 @@ NSDictionary *GetAudioDevices()
 - (IBAction)voice:(id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[voice titleOfSelectedItem] forKey:@"Voice"];
+    NSString *voiceId = [voicesDictionary objectForKey:[voice titleOfSelectedItem]];
+    [defaults setObject:voiceId forKey:@"Voice"];
     [defaults synchronize];
+    
+
+    [synthesizer setVoice:voiceId];
 }
 
 - (IBAction)monitor:(id)sender
@@ -154,10 +158,16 @@ NSDictionary *GetAudioDevices()
     [sound play];
 }
 
+/*
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender willSpeakWord:(NSRange)characterRange ofString:(NSString *)string
 {
-    
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
+    [attrString addAttribute:NSBackgroundColorAttributeName value:[NSColor darkGrayColor] range:characterRange];
+    [text setAttributedStringValue:attrString];
+    // NSLog(@"%@",NSStringFromRange(characterRange));
+    [NSThread sleepForTimeInterval:1.0];
 }
+*/
 
 - (void)sound:(NSSound *)sound didFinishPlaying:(BOOL)aBool
 {
@@ -166,6 +176,7 @@ NSDictionary *GetAudioDevices()
         [sound release];
         // [tempFileURL release];
         [text setStringValue:@""];
+        [[NSFileManager defaultManager] removeItemAtURL:tempFileURL error:NULL];
     }
 }
     
@@ -207,6 +218,7 @@ NSDictionary *GetAudioDevices()
     }
     NSString *defaultVoice = [reverseVoicesDict objectForKey:defaultVoiceKey];
     [voice selectItemWithTitle:defaultVoice];
+    [synthesizer setVoice:defaultVoiceKey];
     
     // Select current output..
     NSString *defaultOutputKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"Output"];
