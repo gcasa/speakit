@@ -5,7 +5,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface NSMutableData (AES256)
 
 - (NSMutableData*) dataByEncryptingDataWithKey: (NSData *) keyData;

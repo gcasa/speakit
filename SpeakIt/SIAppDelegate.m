@@ -13,6 +13,8 @@
 #import "SIDeviceDescriptor.h"
 #import "NSString+SHA1.h"
 
+NSDictionary *GetAudioDevices(void);
+
 NSDictionary *GetAudioDevices()
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:10];
